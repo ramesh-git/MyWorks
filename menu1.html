@@ -1,0 +1,104 @@
+<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+<script src="http://www.w3schools.com/lib/w3data.js"></script>
+<style> 
+#wrap {
+background:#A6D2FF;
+border-top:2px solid;
+border-bottom:2px solid;
+margin-bottom:30px;
+}
+#nav {
+height:3.2em;
+display:table;
+margin:0 auto;
+text-align:center;
+}
+#nav ul {
+list-style:none;
+display:inline-block; 
+}
+#nav ul {
+display:inline;
+}
+#nav li {
+display:inline;
+}
+#nav a {
+float:left;
+color:#000;
+height:1.2em;
+line-height:1.2em;
+text-decoration:none; 
+margin:1em 0 0 -2px;
+padding:0 30px; 
+font-weight:bold;
+border-left:2px solid #000;
+border-right:2px solid #000;
+}
+#nav a:hover, #nav a:focus {
+color:#fff;
+}
+</style>
+<div id="wrap">
+  <div id="nav">
+    <ul class="topmenu">
+    </ul>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+  <div class="col-md-2">
+    <ul class="leftmenu">
+    </ul>
+  </div>
+  <div class="col-md-10 rightcontent">
+    <div class="dynamicURL" w3-include-html="test1.html"></div> 
+  </div>
+  </div>
+</div>
+
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script>
+
+$(document).ready(function(){
+   var iframes = $('iframe');
+iframes.each(function() {
+  console.log('sssssssssssssssssssssssssssssssss');
+    var src = $(this).attr('src');
+    $(this).data('src', src).attr('src', '');
+});
+
+   var menu = {"menu":{"home":[{"home1":"home1.html"},{"home2":"home2.html"},{"home3":"home3.html"}],"about":[{"about1":"about1.html"},{"about2":"about2.html"},{"about3":"about3.html"}],"contact":[{"contact1":"contact1.html"},{"contact2":"contact2.html"},{"contact3":"contact3.html"}]}};
+  var index = 1;
+  $.each(menu.menu, function( key, value){
+    console.log('sssssssssssssssss')
+    if(index == 1)
+      $('.topmenu').append('<li><a href="#">'+key+'</a></li>');
+    else 
+      $('.topmenu').append('<li><a href="#">'+key+'</a></li>');
+    index++;
+  });
+  $(document).on('click','.topmenu > li > a',function(){
+    $('.leftmenu').empty();
+    var menuText = $('<div>').append($(this).clone()).text(); 
+    $.each(menu.menu, function( key, value){
+      if(menuText == key) {
+        var obj = value;
+        $.each(obj, function( key, value){
+          $.each(value, function( key1, value1){
+            $('.leftmenu').append('<li class="nav"><a href="#" data-src="'+value1+'">'+key1+'</a></li>');
+          });
+        });
+      }
+    });
+    //w3IncludeHTML();
+    $(document).on('click','.leftmenu > li > a',function(){
+      var link = $('<div>').append($(this).clone()).find('a').attr('data-src'); 
+      console.log('link:'+link);
+      $('.dynamicURL').attr('w3-include-html',link)
+      w3IncludeHTML();
+    });
+  })
+})
+</script>
