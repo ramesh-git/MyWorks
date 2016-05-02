@@ -1,0 +1,157 @@
+<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+<script src="http://www.w3schools.com/lib/w3data.js"></script>
+<style> 
+iframe {
+    display: block;
+    
+}
+</style>
+<header class="container">
+  <div id="menu" class="navbar navbar-default">
+      <div class="navbar-header">
+          <button class="btn btn-success navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="glyphicon glyphicon-chevron-down"></span>
+          </button>
+     </div>
+      <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right topmenu">
+              
+          </ul>
+      </div>
+  </div>
+</header>
+<div class="container">
+  <div class="row">
+  <div class="col-md-2 leftmenu">
+  </div>
+  <div class="col-md-10 rightcontent">
+    <div class="dynamicURL" w3-include-html="test1.html"></div> 
+  </div>
+  </div>
+</div>
+
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script>
+
+$(document).ready(function(){
+   var iframes = $('iframe');
+iframes.each(function() {
+  console.log('sssssssssssssssssssssssssssssssss');
+    var src = $(this).attr('src');
+    $(this).data('src', src).attr('src', '');
+});
+
+   //var menu = {"menu":{"home":[{"home1":"home1.html"},{"home2":"home2.html"},{"home3":"home3.html"}],"about":[{"about1":"about1.html"},{"about2":"about2.html"},{"about3":"about3.html"}],"contact":[{"contact1":"contact1.html"},{"contact2":"contact2.html"},{"contact3":"contact3.html"}]}};
+   var menu = {"menu":{"home":[{
+    "id": "1",
+    "parentid": "-1",
+    "text": "home1",
+    "link":"home1.html"
+}, {
+    "id": "2",
+    "parentid": "-1",
+    "text": "home2",
+    "link":"home2.html"
+}, {
+    "id": "3",
+    "parentid": "2",
+    "text": "home1.1",
+    "link":"home3.html"
+}],"about":[{
+    "id": "1",
+    "parentid": "-1",
+    "text": "about1",
+    "link":"about1.html"
+}, {
+    "id": "2",
+    "parentid": "-1",
+    "text": "about2",
+    "link":"about2.html"
+}, {
+    "id": "3",
+    "parentid": "2",
+    "text": "about1.1",
+    "link":"about11.html"
+}]
+}};
+var builddata = function (data) {
+    var source = [];
+    var items = [];
+    // build hierarchical source.
+    console.log(menu.menu.length);
+    for (i = 0; i < data.length; i++) {
+        var item = data[i];
+        var label = item["text"];
+        var parentid = item["parentid"];
+        var id = item["id"];
+        var link = item["link"];
+
+        if (items[parentid]) {
+            var item = { parentid: parentid, label: label, item: item, link: link };
+            if (!items[parentid].items) {
+                items[parentid].items = [];
+            }
+            items[parentid].items[items[parentid].items.length] = item;
+            items[id] = item;
+        }
+        else {
+            items[id] = { parentid: parentid, label: label, item: item, link: link };
+            source[id] = items[id];
+        }
+    }
+    console.log(source);
+    return source;
+}
+//var source = builddata();
+var buildUL = function (parent, items) {
+    $.each(items, function () {
+        if (this.label) {
+            // create LI element and append it to the parent element.
+            
+
+            var li = $("<li class='nav'><a href='#' data-src='"+this.link+"'>" + this.label + "</a></li>");
+            li.appendTo(parent);
+            // if there are sub items, call the buildUL function.
+            if (this.items && this.items.length > 0) {
+                var ul = $("<ul></ul>");
+                ul.appendTo(li);
+                buildUL(ul, this.items);
+            }
+        }
+    });
+}
+
+  var index = 1;
+  $.each(menu.menu, function( key, value){
+    console.log('sssssssssssssssss')
+    if(index == 1)
+      $('.topmenu').append('<li class="nav active"><a href="#">'+key+'</a></li>');
+    else 
+      $('.topmenu').append('<li class="nav"><a href="#">'+key+'</a></li>');
+    index++;
+  });
+  var source;
+  $(document).on('click','.topmenu > li > a',function(){
+    var menuText = $('<div>').append($(this).clone()).text(); 
+    $.each(menu.menu, function( key, value){
+      if(menuText == key) {
+        source = builddata(value);
+      }
+    });
+    $('.leftmenu').empty();
+    
+    var ul = $("<ul></ul>");
+    ul.appendTo(".leftmenu");
+    buildUL(ul, source);
+   
+  });
+   $(document).on('click','.leftmenu > ul > li > a, .leftmenu > ul > li > ul > li > a',function(){
+    console.log("=============================");
+      var link = $('<div>').append($(this).clone()).find('a').attr('data-src'); 
+      console.log('link:'+link);
+      $('.dynamicURL').attr('w3-include-html',link)
+      w3IncludeHTML();
+    });
+
+})
+</script>
