@@ -1,0 +1,23 @@
+var data = [{"date":"04-05-2016","projetc":"ABSC1","defectcount":100},{"date":"03-05-2016","projetc":"ABSC2","defectcount":50},{"date":"02-05-2016","projetc":"ABSC3","defectcount":30},{"date":"01-05-2016","projetc":"ABSC4","defectcount":80},{"date":"30-04-2016","projetc":"ABSC5","defectcount":10},{"date":"29-04-2016","projetc":"ABSC6","defectcount":10},{"date":"28-03-2016","projetc":"ABSC7","defectcount":10}];
+
+var startDate = new Date();
+startDate.setDate(startDate.getDate() - 15);
+var endDate = new Date();
+
+var resultsData = data.filter(function (a) {
+                var hitDates = a.date.split("-") || {};
+              //console.log(hitDates);
+               // hitDates = Object.keys(hitDates);
+               var hitDatesArray = [];
+               hitDatesArray.push(hitDates);
+             //console.log(hitDatesArray);
+                hitDates = hitDatesArray.map(function(date) { return new Date(hitDates[2], hitDates[1] - 1, hitDates[0]); });
+               //onsole.log(hitDates);
+                var hitDateMatches = hitDates.filter(function(date) { return date >= startDate && date <= endDate });
+                return hitDateMatches.length>0;
+            });
+            
+           console.log(resultsData);
+           for(var i=0;i<resultsData.length;i++){
+           console.log("Project:"+resultsData[i].projetc +" and Def count:"+resultsData[i].defectcount)
+           }
