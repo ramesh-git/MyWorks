@@ -79,13 +79,16 @@ function groupBy(list, fn) {
 }
 
 var result = groupBy(list, function(item) {
+//	console.log(item);
+  
     return item.defectType;
 });
 var data = result[0];
 function getDefects(keyValue){
 $.each(data,function(key,value){
 var sum = 0;
-if(key == keyValue){
+var val = key.replace(/\"/g, "");
+if(val == keyValue){
 	
   $.each(value,function(){
   	sum+=parseInt(this) || 0;
@@ -93,6 +96,6 @@ if(key == keyValue){
   console.log("Defect Type:"+key.toString()+" and Total defects :"+sum);
 }
 return sum;
-}
 });
-getDefects('foo');
+}
+getDefects('Proj2');
