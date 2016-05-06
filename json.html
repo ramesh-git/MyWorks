@@ -82,11 +82,17 @@ var result = groupBy(list, function(item) {
     return item.defectType;
 });
 var data = result[0];
+function getDefects(keyValue){
 $.each(data,function(key,value){
-	var sum = 0;
+var sum = 0;
+if(key == keyValue){
+	
   $.each(value,function(){
   	sum+=parseInt(this) || 0;
   });
   console.log("Defect Type:"+key.toString()+" and Total defects :"+sum);
-
+}
+return sum;
+}
 });
+getDefects('foo');
