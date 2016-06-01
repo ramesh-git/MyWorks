@@ -312,9 +312,9 @@
             // add selected items display container
             this.$showSelectionContainer = $('<div class="sol-current-selection"/>');
             if (this.config.showSelectionBelowList) {
-                this.$showSelectionContainer.insertAfter(this.$innerContainer);
+                //this.$showSelectionContainer.insertAfter(this.$innerContainer);
             } else {
-                this.$showSelectionContainer.insertBefore(this.$innerContainer);
+                //this.$showSelectionContainer.insertBefore(this.$innerContainer);
             }
 
             // dimensions
@@ -1024,12 +1024,13 @@
         selectAll: function () {
             if (this.config.multiple) {
                 var $changedInputs = this.$selectionContainer
-                    .find('input[type="checkbox"]:not([disabled], :checked)')
+                    .find('input[type="checkbox"]:not([disabled])')
                     .prop('checked', true)
+                    .prop('disabled', true)
                     .trigger('change', true);
 
                 this.close();
-
+                $('.sol-label-text').css({"color": "#bbb"});
                 if ($.isFunction(this.config.events.onChange)) {
                     this.config.events.onChange.call(this, this, $changedInputs);
                 }
@@ -1039,12 +1040,13 @@
         deselectAll: function () {
             if (this.config.multiple) {
                 var $changedInputs = this.$selectionContainer
-                    .find('input[type="checkbox"]:not([disabled]):checked')
+                    .find('input[type="checkbox"]:checked')
                     .prop('checked', false)
+                    .prop('disabled', false)
                     .trigger('change', true);
 
                 this.close();
-
+                $('.sol-label-text').css({"color": "initial"});
                 if ($.isFunction(this.config.events.onChange)) {
                     this.config.events.onChange.call(this, this, $changedInputs);
                 }
