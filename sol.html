@@ -3,8 +3,9 @@
 <script type="text/javascript" src="sol.js"></script>
 
 
-            <p>Here is an example of what you will get when you use SOL</p>
-
+            <p>Here is an example of whasssssssst you will get when you use SOL</p>
+<input type="button" id="getVals" value="Get">
+<div id="selList"></div>
 <p><select id="demonstration" name="character0" style="width: 250px" multiple="multiple">
     <optgroup label="The Griffins">
         <option value="Peter" selected>Peter Griffin</option>
@@ -42,10 +43,16 @@
     <option value="Jeffrey">Jeffrey</option>
     <option value="Carl">Carl</option><br>
 </select></p>
-
 <script type="text/javascript">
 
  $(function() {
         $('#demonstration').searchableOptionList({ maxHeight: '300px', showSelectAll: true });
+        $('#getVals').click(function(){
+            $('#selList').empty();
+            var selects = $('#demonstration').searchableOptionList().getSelection();
+            $.each(selects,function(item,value){
+                $('#selList').append("<br/>"+$(this).val())
+            })
+        })
        });
        </script>
