@@ -1,0 +1,21 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="CAPTCHA.JS"></script>
+<div id="captcha"></div>
+<script>
+        $(function () {
+
+            var captcha = new CAPTCHA({
+                selector: '#captcha',
+                width: 200,
+                height: 100,
+                text:"LENIN",
+                randomText: false,
+                  font: 'bold 24px "Comic Sans MS", cursive, sans-serif',
+
+                onSuccess: function () { alert('Correct!'); }
+            });
+
+            captcha.generate();
+
+        });
+</script>
